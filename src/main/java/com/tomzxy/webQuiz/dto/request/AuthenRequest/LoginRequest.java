@@ -1,4 +1,4 @@
-package com.tomzxy.webQuiz.dto.response;
+package com.tomzxy.webQuiz.dto.request.AuthenRequest;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class IntrospectResponse {
-    boolean valid;
+public class LoginRequest {
+    String userName;
+    String password;
 }

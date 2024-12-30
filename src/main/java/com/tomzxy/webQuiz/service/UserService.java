@@ -2,7 +2,7 @@ package com.tomzxy.webQuiz.service;
 
 import com.tomzxy.webQuiz.dto.request.user.UserCreateRequestDTO;
 import com.tomzxy.webQuiz.dto.request.user.UserUpdateRequest;
-import com.tomzxy.webQuiz.dto.response.PageResponse;
+import com.tomzxy.webQuiz.dto.response.AppResponse.PageResponse;
 import com.tomzxy.webQuiz.dto.response.User.UserDetailResponse;
 import com.tomzxy.webQuiz.enums.UserStatus;
 import org.springframework.data.domain.Pageable;

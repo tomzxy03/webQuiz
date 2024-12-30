@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -59,4 +60,7 @@ public class QuizResult extends BaseEntity{
     @JsonIgnore
     @JoinColumn(name = "quiz_id", nullable = false)
     Quiz quiz;
+
+    @OneToMany(mappedBy = "quizResult", cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    List<AnswerUser> answerUser;
 }

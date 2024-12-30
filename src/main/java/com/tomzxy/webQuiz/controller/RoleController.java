@@ -2,14 +2,13 @@ package com.tomzxy.webQuiz.controller;
 
 import com.tomzxy.webQuiz.constants.EndPoint;
 import com.tomzxy.webQuiz.dto.request.role.RoleUpdateRequest;
-import com.tomzxy.webQuiz.dto.response.ResponseData;
-import com.tomzxy.webQuiz.dto.response.ResponseError;
+import com.tomzxy.webQuiz.dto.response.AppResponse.ResponseData;
+import com.tomzxy.webQuiz.dto.response.AppResponse.ResponseError;
 import com.tomzxy.webQuiz.dto.response.Role.BaseRoleResponse;
 import com.tomzxy.webQuiz.service.RoleService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;

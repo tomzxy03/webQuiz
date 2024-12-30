@@ -1,16 +1,16 @@
 package com.tomzxy.webQuiz.service;
 
 import com.nimbusds.jose.JOSEException;
-import com.tomzxy.webQuiz.dto.request.AuthenticatedRequest;
-import com.tomzxy.webQuiz.dto.request.IntrospectRequest;
-import com.tomzxy.webQuiz.dto.request.LogoutRequest;
-import com.tomzxy.webQuiz.dto.response.AuthenticatedResponse;
-import com.tomzxy.webQuiz.dto.response.IntrospectResponse;
+import com.tomzxy.webQuiz.dto.request.AuthenRequest.LoginRequest;
+import com.tomzxy.webQuiz.dto.request.AuthenRequest.IntrospectRequest;
+import com.tomzxy.webQuiz.dto.request.AuthenRequest.LogoutRequest;
+import com.tomzxy.webQuiz.dto.response.AuthenResponse.LoginResponse;
+import com.tomzxy.webQuiz.dto.response.AuthenResponse.IntrospectResponse;
 
 import java.text.ParseException;
 
 public interface AuthenticationService {
-    public AuthenticatedResponse authenticate(AuthenticatedRequest request);
+    public LoginResponse authenticate(LoginRequest request);
 
     public IntrospectResponse introspect (IntrospectRequest request) throws JOSEException, ParseException;
 

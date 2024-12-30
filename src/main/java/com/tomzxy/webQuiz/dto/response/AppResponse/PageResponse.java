@@ -1,4 +1,4 @@
-package com.tomzxy.webQuiz.dto.response;
+package com.tomzxy.webQuiz.dto.response.AppResponse;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.tomzxy.webQuiz.dto.request;
+package com.tomzxy.webQuiz.dto.request.AuthenRequest;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +8,6 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthenticatedRequest {
-    String userName;
-    String password;
+public class LogoutRequest {
+    String token;
 }

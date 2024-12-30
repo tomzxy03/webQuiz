@@ -1,6 +1,5 @@
-package com.tomzxy.webQuiz.dto.response;
+package com.tomzxy.webQuiz.dto.response.AppResponse;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 

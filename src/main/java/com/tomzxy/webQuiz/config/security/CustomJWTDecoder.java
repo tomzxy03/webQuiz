@@ -1,7 +1,7 @@
 package com.tomzxy.webQuiz.config.security;
 
 import com.nimbusds.jose.JOSEException;
-import com.tomzxy.webQuiz.dto.request.IntrospectRequest;
+import com.tomzxy.webQuiz.dto.request.AuthenRequest.IntrospectRequest;
 import com.tomzxy.webQuiz.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

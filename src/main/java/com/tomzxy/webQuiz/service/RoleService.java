@@ -10,7 +10,6 @@ import java.util.Map;
 public interface RoleService {
      List<BaseRoleResponse> getAllRole();
      void addRolePermissionObject(Role role, Map<String, List<String>> objectPermission);
-
      BaseRoleResponse getRoleById(Long id);
      BaseRoleResponse getRoleByName(String name);
      BaseRoleResponse addRole(RoleUpdateRequest role);

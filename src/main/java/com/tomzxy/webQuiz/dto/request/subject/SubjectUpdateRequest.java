@@ -5,12 +5,14 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SubjectRequest {
+public class SubjectUpdateRequest {
     @NotBlank(message = "Subject name must be not blank")
     String subjectText;
 
     String description;
-
+    List<String> chapters;
 }

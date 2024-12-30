@@ -1,4 +1,4 @@
-package com.tomzxy.webQuiz.dto.response;
+package com.tomzxy.webQuiz.dto.response.AppResponse;
 
 public class ResponseError extends ResponseData{
     public ResponseError(int code, String messages) {

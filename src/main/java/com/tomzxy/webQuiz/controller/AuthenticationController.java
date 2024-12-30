@@ -2,12 +2,12 @@ package com.tomzxy.webQuiz.controller;
 
 import com.nimbusds.jose.JOSEException;
 import com.tomzxy.webQuiz.constants.EndPoint;
-import com.tomzxy.webQuiz.dto.request.AuthenticatedRequest;
-import com.tomzxy.webQuiz.dto.request.IntrospectRequest;
-import com.tomzxy.webQuiz.dto.request.LogoutRequest;
-import com.tomzxy.webQuiz.dto.response.AuthenticatedResponse;
-import com.tomzxy.webQuiz.dto.response.IntrospectResponse;
-import com.tomzxy.webQuiz.dto.response.ResponseData;
+import com.tomzxy.webQuiz.dto.request.AuthenRequest.LoginRequest;
+import com.tomzxy.webQuiz.dto.request.AuthenRequest.IntrospectRequest;
+import com.tomzxy.webQuiz.dto.request.AuthenRequest.LogoutRequest;
+import com.tomzxy.webQuiz.dto.response.AuthenResponse.LoginResponse;
+import com.tomzxy.webQuiz.dto.response.AuthenResponse.IntrospectResponse;
+import com.tomzxy.webQuiz.dto.response.AppResponse.ResponseData;
 import com.tomzxy.webQuiz.service.AuthenticationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class AuthenticationController {
 
 
     @PostMapping(EndPoint.Auth.TOKEN)
-    public ResponseData<AuthenticatedResponse> authenticate(@RequestBody AuthenticatedRequest request){
+    public ResponseData<LoginResponse> authenticate(@RequestBody LoginRequest request){
         var result = authenticationService.authenticate(request);
 
         return new ResponseData<>(HttpStatus.OK.value(), "Authentication token",result);

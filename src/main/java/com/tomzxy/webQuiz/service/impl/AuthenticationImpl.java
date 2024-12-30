@@ -5,11 +5,11 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import com.tomzxy.webQuiz.dto.request.AuthenticatedRequest;
-import com.tomzxy.webQuiz.dto.request.IntrospectRequest;
-import com.tomzxy.webQuiz.dto.request.LogoutRequest;
-import com.tomzxy.webQuiz.dto.response.AuthenticatedResponse;
-import com.tomzxy.webQuiz.dto.response.IntrospectResponse;
+import com.tomzxy.webQuiz.dto.request.AuthenRequest.LoginRequest;
+import com.tomzxy.webQuiz.dto.request.AuthenRequest.IntrospectRequest;
+import com.tomzxy.webQuiz.dto.request.AuthenRequest.LogoutRequest;
+import com.tomzxy.webQuiz.dto.response.AuthenResponse.LoginResponse;
+import com.tomzxy.webQuiz.dto.response.AuthenResponse.IntrospectResponse;
 import com.tomzxy.webQuiz.exception.ResourceNotFoundException;
 import com.tomzxy.webQuiz.model.BaseEntity;
 import com.tomzxy.webQuiz.model.InvalidToken;
@@ -72,7 +72,7 @@ public class AuthenticationImpl implements AuthenticationService {
     }
 
     @Override
-    public AuthenticatedResponse authenticate(AuthenticatedRequest request) {
+    public LoginResponse authenticate(LoginRequest request) {
         log.info("get user name of request {} {}", request.getUserName(), request.getPassword());
         var user = userRepository.findByUserName(request.getUserName())
                 .orElseThrow(() -> new ResourceNotFoundException("User not existed"));
@@ -85,16 +85,16 @@ public class AuthenticationImpl implements AuthenticationService {
 
         var token = generateToken(user);
 
-        return AuthenticatedResponse.builder()
+        return LoginResponse.builder()
                 .token(token)
                 .authenticated(true)
                 .build();
     }
 
     public void logout(LogoutRequest token) throws ParseException, JOSEException {
-        var signToken = verifyToken(token.getToken());
-        String jit = signToken.getJWTClaimsSet().getJWTID();
-        Date expiryTime = signToken.getJWTClaimsSet().getExpirationTime();
+        var signToken = verifyToken(token.getToken()); //verify token to JWT
+        String jit = signToken.getJWTClaimsSet().getJWTID(); // get jwt id
+        Date expiryTime = signToken.getJWTClaimsSet().getExpirationTime(); // get expiryTime
 
         InvalidToken invalidToken = InvalidToken.builder()
                 .id(jit)
@@ -114,11 +114,11 @@ public class AuthenticationImpl implements AuthenticationService {
 
 
 
-        if(!verified && expiryTime.after(new Date())){
+        if(!verified && expiryTime.after(new Date())){ // check token and expiryTime isn't valid
             throw new ResourceNotFoundException("Token is expired");
         }
 
-        if(invalidedTokenRepository.existsById(signedJWT.getJWTClaimsSet().getJWTID())){
+        if(invalidedTokenRepository.existsById(signedJWT.getJWTClaimsSet().getJWTID())){ // check jwt id is saved in db
             throw new ResourceNotFoundException("Token is invalidated");
         }
         return signedJWT;
@@ -130,13 +130,13 @@ public class AuthenticationImpl implements AuthenticationService {
 
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .subject(user.getUserName())
-                .issuer("tomzxy.com")
+                .issuer("webQuiz.com") // url website
                 .issueTime(new Date())
                 .expirationTime(new Date(
-                        Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
+                        Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli() // expiryTime lasts for 1 hour from the issueTime
                 ))
-                .jwtID(UUID.randomUUID().toString())
-                .claim("scope", buildScope(user))
+                .jwtID(UUID.randomUUID().toString()) // jwtId is randomly generated
+                .claim("scope", buildScope(user)) // scope includes role,permission_objectType
 
                 .build();
 
@@ -157,7 +157,7 @@ public class AuthenticationImpl implements AuthenticationService {
         StringJoiner stringJoiner= new StringJoiner(" ");
         if(!CollectionUtils.isEmpty(user.getRoles()))
             user.getRoles().forEach(role ->{
-                stringJoiner.add("ROLE_"+role.getName());
+                stringJoiner.add("ROLE_"+role.getName()); //add prefix Role_
 
             });
 
