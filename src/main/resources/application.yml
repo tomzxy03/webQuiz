@@ -1,0 +1,10 @@
+server:
+    port: 80
+spring:
+    application:
+        name: webQuiz
+    profiles:
+        active: @spring.profiles.active@
+
+    jackson:
+        date-format: dd/MM/yyyy
