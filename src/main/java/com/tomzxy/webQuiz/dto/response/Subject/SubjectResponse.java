@@ -19,5 +19,5 @@ public class SubjectResponse {
 
     String description;
 
-    List<String> chapters;
+    List<Chapter> chapters;
 }

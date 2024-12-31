@@ -2,10 +2,12 @@ package com.tomzxy.webQuiz.controller;
 
 
 import com.tomzxy.webQuiz.constants.EndPoint;
+import com.tomzxy.webQuiz.dto.request.chapter.ChapterRequestDTO;
 import com.tomzxy.webQuiz.dto.request.subject.SubjectRequest;
 import com.tomzxy.webQuiz.dto.request.subject.SubjectUpdateRequest;
 import com.tomzxy.webQuiz.dto.response.AppResponse.ResponseData;
 import com.tomzxy.webQuiz.dto.response.AppResponse.ResponseError;
+import com.tomzxy.webQuiz.dto.response.Chapter.ChapterResponse;
 import com.tomzxy.webQuiz.dto.response.Subject.SubjectResponse;
 import com.tomzxy.webQuiz.service.SubjectService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -42,6 +44,19 @@ public class SubjectController {
             return new ResponseError(HttpStatus.BAD_REQUEST.value(), "");
         }
     }
+
+    @PostMapping(EndPoint.Subject.ADD_CHAPTER)
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseData<ChapterResponse> addChapter(@PathVariable Long subjectId , @RequestBody @Valid ChapterRequestDTO chapterRequest){
+        log.info("add chapter with subjectId and chapterId {} {}", subjectId, chapterRequest);
+        var chapter= subjectService.addChapter(subjectId, chapterRequest);
+        try{
+            return new ResponseData<>(HttpStatus.CREATED.value(), "", chapter);
+        }catch (Exception e){
+            return new ResponseError(HttpStatus.BAD_REQUEST.value(), "");
+        }
+    }
+
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseData<List<SubjectResponse>> getAllSubject(){

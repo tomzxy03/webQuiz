@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ChapterResponse {
     Long id;
+
     String chapterName;
 
     Subject subject;

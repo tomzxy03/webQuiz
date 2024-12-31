@@ -14,5 +14,6 @@ public class SubjectUpdateRequest {
     String subjectText;
 
     String description;
+
     List<String> chapters;
 }

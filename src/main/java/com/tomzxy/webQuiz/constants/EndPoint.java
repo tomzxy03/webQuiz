@@ -26,7 +26,6 @@ public class EndPoint {
         public static final String BASE = API_PREFIX + "/users";
         public static final String ID = "{userId}";
         public static final String DELETE_MANY = "/delete_many";
-
         public static final String QUIZZES = ID + "/quizzes_result";
     }
     public static final class Role{
@@ -38,11 +37,13 @@ public class EndPoint {
         public static final String BASE = API_PREFIX + "/subjects";
         public static final String ID = "{subjectId}";
         public static final String DELETE_MANY = "/delete_many";
+        public static final String ADD_CHAPTER = ID + "/chapters";
     }
     public static final class Chapter{
         public static final String BASE = API_PREFIX + "/chapters";
         public static final String ID = "{chapterId}";
         public static final String DELETE_MANY = "/delete_many";
+
     }
     public static final class Question{
         public static final String BASE = API_PREFIX + "/questions";
