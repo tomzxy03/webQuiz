@@ -5,7 +5,7 @@ import com.tomzxy.webQuiz.constants.EndPoint;
 import com.tomzxy.webQuiz.dto.request.AuthenRequest.LoginRequest;
 import com.tomzxy.webQuiz.dto.request.AuthenRequest.IntrospectRequest;
 import com.tomzxy.webQuiz.dto.request.AuthenRequest.LogoutRequest;
-import com.tomzxy.webQuiz.dto.response.AuthenResponse.LoginResponse;
+import com.tomzxy.webQuiz.dto.response.AuthenResponse.AuthenticationResponse;
 import com.tomzxy.webQuiz.dto.response.AuthenResponse.IntrospectResponse;
 import com.tomzxy.webQuiz.dto.response.AppResponse.ResponseData;
 import com.tomzxy.webQuiz.service.AuthenticationService;
@@ -30,7 +30,7 @@ public class AuthenticationController {
 
 
     @PostMapping(EndPoint.Auth.TOKEN)
-    public ResponseData<LoginResponse> authenticate(@RequestBody LoginRequest request){
+    public ResponseData<AuthenticationResponse> authenticate(@RequestBody LoginRequest request){
         var result = authenticationService.authenticate(request);
 
         return new ResponseData<>(HttpStatus.OK.value(), "Authentication token",result);

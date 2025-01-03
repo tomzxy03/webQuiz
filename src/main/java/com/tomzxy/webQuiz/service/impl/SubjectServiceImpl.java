@@ -72,10 +72,11 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public ChapterResponse addChapter(Long idSubject, ChapterRequestDTO chapterRequestDTO) {
+    public SubjectResponse addChapter(Long idSubject, ChapterRequestDTO chapterRequestDTO) {
         Subject subject = subjectRepository.findById(idSubject).orElseThrow(()-> new ResourceNotFoundException("Subject not found!!"));
         Chapter chapter = chapterMapper.toChapter(chapterRequestDTO);
         chapter.setSubject(subject);
-        return chapterMapper.toChapterResponse(chapterRepository.save(chapter));
+        chapterRepository.save(chapter);
+        return subjectMapper.toSubjectResponse(subject);
     }
 }

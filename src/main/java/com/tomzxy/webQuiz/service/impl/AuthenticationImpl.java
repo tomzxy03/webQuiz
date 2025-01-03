@@ -8,7 +8,8 @@ import com.nimbusds.jwt.SignedJWT;
 import com.tomzxy.webQuiz.dto.request.AuthenRequest.LoginRequest;
 import com.tomzxy.webQuiz.dto.request.AuthenRequest.IntrospectRequest;
 import com.tomzxy.webQuiz.dto.request.AuthenRequest.LogoutRequest;
-import com.tomzxy.webQuiz.dto.response.AuthenResponse.LoginResponse;
+import com.tomzxy.webQuiz.dto.request.AuthenRequest.RefreshRequest;
+import com.tomzxy.webQuiz.dto.response.AuthenResponse.AuthenticationResponse;
 import com.tomzxy.webQuiz.dto.response.AuthenResponse.IntrospectResponse;
 import com.tomzxy.webQuiz.exception.ResourceNotFoundException;
 import com.tomzxy.webQuiz.model.BaseEntity;
@@ -53,12 +54,19 @@ public class AuthenticationImpl implements AuthenticationService {
     @NonFinal
     protected String SIGN_KEY ;
 
+    @Value("${jwt.valid-duration}")
+    @NonFinal
+    protected Long VALID_DURATION ;
+
+    @Value("${jwt.refreshable-duration}")
+    @NonFinal
+    protected Long REFRESHABLE_DURATION ;
 
     public IntrospectResponse introspect(IntrospectRequest request) throws JOSEException, ParseException {
         var token = request.getToken();
         boolean isvalid = true;
         try{
-            verifyToken(token);
+            verifyToken(token,false);
 
         }catch (Exception e){
             isvalid = false;
@@ -72,7 +80,7 @@ public class AuthenticationImpl implements AuthenticationService {
     }
 
     @Override
-    public LoginResponse authenticate(LoginRequest request) {
+    public AuthenticationResponse authenticate(LoginRequest request) {
         log.info("get user name of request {} {}", request.getUserName(), request.getPassword());
         var user = userRepository.findByUserName(request.getUserName())
                 .orElseThrow(() -> new ResourceNotFoundException("User not existed"));
@@ -85,30 +93,65 @@ public class AuthenticationImpl implements AuthenticationService {
 
         var token = generateToken(user);
 
-        return LoginResponse.builder()
+        return AuthenticationResponse.builder()
                 .token(token)
                 .authenticated(true)
                 .build();
     }
 
     public void logout(LogoutRequest token) throws ParseException, JOSEException {
-        var signToken = verifyToken(token.getToken()); //verify token to JWT
-        String jit = signToken.getJWTClaimsSet().getJWTID(); // get jwt id
-        Date expiryTime = signToken.getJWTClaimsSet().getExpirationTime(); // get expiryTime
+        try {
+            var signToken = verifyToken(token.getToken(), true); //verify token to JWT
 
-        InvalidToken invalidToken = InvalidToken.builder()
-                .id(jit)
-                .expireTime(expiryTime)
-                .build();
-        invalidedTokenRepository.save(invalidToken);
+            String jit = signToken.getJWTClaimsSet().getJWTID(); // get jwt id
+            Date expiryTime = signToken.getJWTClaimsSet().getExpirationTime(); // get expiryTime
+
+            InvalidToken invalidToken = InvalidToken.builder()
+                    .id(jit)
+                    .expireTime(expiryTime)
+                    .build();
+            invalidedTokenRepository.save(invalidToken);
+        }catch (Exception e){
+            log.info("Token already expired");
+        }
+
     }
 
-    private SignedJWT verifyToken(String token) throws JOSEException, ParseException {
+    public AuthenticationResponse refreshToken(RefreshRequest request) throws ParseException, JOSEException {
+        var signedJWT = verifyToken(request.getToken(),true);
+
+        var jit = signedJWT.getJWTClaimsSet().getJWTID();
+        var expireTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+
+        InvalidToken invalidToken=InvalidToken.builder()
+                .id(jit)
+                .expireTime(expireTime)
+                .build();
+
+        invalidedTokenRepository.save(invalidToken); // set expired token
+
+        var username = signedJWT.getJWTClaimsSet().getSubject();
+        var user = userRepository.findByUserName(username).orElseThrow(()-> new ResourceNotFoundException("user not exists"));
+        var token = generateToken(user);
+        return AuthenticationResponse.builder()
+                .token(token)
+                .authenticated(true)
+                .build();
+
+    }
+
+    private SignedJWT verifyToken(String token, boolean isRefresh) throws JOSEException, ParseException {
         JWSVerifier verifier = new MACVerifier(SIGN_KEY.getBytes());
 
         SignedJWT signedJWT = SignedJWT.parse(token);
 
-        Date expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+
+        Date expiryTime = (isRefresh)
+                ?
+                new Date(signedJWT.getJWTClaimsSet().getIssueTime() // if need refresh token
+                        .toInstant().plus(REFRESHABLE_DURATION,ChronoUnit.SECONDS).toEpochMilli()
+                )
+                : signedJWT.getJWTClaimsSet().getExpirationTime(); // if need authenticate token
 
         var verified = signedJWT.verify(verifier);
 
@@ -133,7 +176,7 @@ public class AuthenticationImpl implements AuthenticationService {
                 .issuer("webQuiz.com") // url website
                 .issueTime(new Date())
                 .expirationTime(new Date(
-                        Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli() // expiryTime lasts for 1 hour from the issueTime
+                        Instant.now().plus(VALID_DURATION, ChronoUnit.HOURS).toEpochMilli() // expiryTime lasts for 1 hour from the issueTime
                 ))
                 .jwtID(UUID.randomUUID().toString()) // jwtId is randomly generated
                 .claim("scope", buildScope(user)) // scope includes role,permission_objectType

@@ -29,7 +29,6 @@ import java.util.List;
 @Validated
 @Tag(name="Subject controller")
 @RequiredArgsConstructor
-
 public class SubjectController {
     private final SubjectService subjectService;
 
@@ -47,7 +46,7 @@ public class SubjectController {
 
     @PostMapping(EndPoint.Subject.ADD_CHAPTER)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseData<ChapterResponse> addChapter(@PathVariable Long subjectId , @RequestBody @Valid ChapterRequestDTO chapterRequest){
+    public ResponseData<SubjectResponse> addChapter(@PathVariable Long subjectId , @RequestBody @Valid ChapterRequestDTO chapterRequest){
         log.info("add chapter with subjectId and chapterId {} {}", subjectId, chapterRequest);
         var chapter= subjectService.addChapter(subjectId, chapterRequest);
         try{

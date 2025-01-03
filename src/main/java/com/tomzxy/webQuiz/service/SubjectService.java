@@ -17,5 +17,5 @@ public interface SubjectService {
     SubjectResponse getSubjectByName(String name);
     void deleteSubject(Long id);
     SubjectResponse updateSubject(Long id, SubjectUpdateRequest request);
-    ChapterResponse addChapter(Long idSubject, ChapterRequestDTO chapterRequestDTO);
+    SubjectResponse addChapter(Long idSubject, ChapterRequestDTO chapterRequestDTO);
 }

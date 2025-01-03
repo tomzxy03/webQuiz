@@ -10,5 +10,4 @@ import lombok.experimental.FieldDefaults;
 public class ChapterRequestDTO {
     @NotBlank(message = "Chapter name must be not blank")
     String chapterName;
-    String description;
 }
