@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -19,6 +20,6 @@ public class QuestionUpdateRequestDTO {
     @NotNull(message = "Question level must be not null")
     Level level;
 
-
+    List<String> answers;
 
 }

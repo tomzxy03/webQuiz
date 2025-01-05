@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface QuestionRepository extends JpaRepository<Question, Long>, JpaSpecificationExecutor<Question> {
 
     Optional<Question> findByQuestionText(String question_text);
-    List<Question> findByLevel (Level level);
+    List<Question> findAllByLevel (Level level);
     Long countQuestionByLevel (Level level);
 
 }

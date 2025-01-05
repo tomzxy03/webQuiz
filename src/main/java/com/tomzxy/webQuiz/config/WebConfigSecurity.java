@@ -67,7 +67,8 @@ public class WebConfigSecurity {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(request ->
-                request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINT).permitAll()
+                request.requestMatchers(PUBLIC_ENDPOINT)
+                        .permitAll()
                         .anyRequest().authenticated()
                         );
         httpSecurity.csrf(AbstractHttpConfigurer::disable);

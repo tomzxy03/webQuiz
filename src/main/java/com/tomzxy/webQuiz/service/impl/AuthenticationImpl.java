@@ -56,11 +56,11 @@ public class AuthenticationImpl implements AuthenticationService {
 
     @Value("${jwt.valid-duration}")
     @NonFinal
-    protected Long VALID_DURATION ;
+    protected long VALID_DURATION ;
 
     @Value("${jwt.refreshable-duration}")
     @NonFinal
-    protected Long REFRESHABLE_DURATION ;
+    protected long REFRESHABLE_DURATION ;
 
     public IntrospectResponse introspect(IntrospectRequest request) throws JOSEException, ParseException {
         var token = request.getToken();

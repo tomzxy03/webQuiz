@@ -8,6 +8,7 @@ class WebQuizApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
 }

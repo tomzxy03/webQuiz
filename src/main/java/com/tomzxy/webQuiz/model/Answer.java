@@ -16,7 +16,7 @@ import lombok.experimental.FieldDefaults;
 public class Answer extends BaseEntity{
 
     @Column(name = "answer_text", nullable = false)
-    String answer_text;
+    String answerText;
 
     @Column(name = "correct_answer")
     Boolean correct_answer;
