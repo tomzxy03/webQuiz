@@ -29,7 +29,7 @@ public class AuthenticationController {
     AuthenticationService authenticationService;
 
 
-    @PostMapping(EndPoint.Auth.TOKEN)
+    @PostMapping(EndPoint.Auth.LOGIN)
     public ResponseData<AuthenticationResponse> authenticate(@RequestBody LoginRequest request){
         var result = authenticationService.authenticate(request);
 

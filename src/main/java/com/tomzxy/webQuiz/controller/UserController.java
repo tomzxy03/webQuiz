@@ -1,5 +1,6 @@
 package com.tomzxy.webQuiz.controller;
 
+import com.tomzxy.webQuiz.config.Translator;
 import com.tomzxy.webQuiz.constants.EndPoint;
 import com.tomzxy.webQuiz.dto.request.user.UserCreateRequestDTO;
 import com.tomzxy.webQuiz.dto.request.user.UserUpdateRequest;
@@ -37,10 +38,10 @@ public class UserController {
 
         try{
             Long userId = userService.saveUser(requestDTO);
-            return new ResponseData<>(HttpStatus.CREATED.value(), "User has been saved", userId);
+            return new ResponseData<>(HttpStatus.CREATED.value(), Translator.toLocale("user.add.successfully"), userId);
         }catch (Exception e){
             log.error("Error add user", e);
-            return  new ResponseError(HttpStatus.BAD_REQUEST.value(), "User add failed");
+            return  new ResponseError(HttpStatus.BAD_REQUEST.value(), e.getMessage());
         }
     }
 
@@ -52,7 +53,7 @@ public class UserController {
         log.info("Username {}", authentication.getName());
         authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
 
-        return new ResponseData<>(HttpStatus.OK.value(), "Get all users", userService.getUsers());
+        return new ResponseData<>(HttpStatus.OK.value(), Translator.toLocale("user.getAll.successfully"), userService.getUsers());
     }
 
     @GetMapping(EndPoint.User.ID)
@@ -60,7 +61,7 @@ public class UserController {
     public ResponseData<UserDetailResponse> getUser(@PathVariable String userId){
        log.info("Request get user detail userId {}",userId);
         try {
-            return new ResponseData<>(HttpStatus.OK.value(), "Get user successfully",userService.getUser(userId));
+            return new ResponseData<>(HttpStatus.OK.value(), Translator.toLocale("user.get.successfully"),userService.getUser(userId));
         }catch (ResourceNotFoundException e){
             log.error("errorMessage={}", e.getMessage(), e.getCause());
             return new ResponseError(HttpStatus.BAD_REQUEST.value(), e.getMessage());
@@ -72,7 +73,7 @@ public class UserController {
     public ResponseData<UserDetailResponse> getMyInfo(){
         log.info("Request get my info");
         try {
-            return new ResponseData<>(HttpStatus.OK.value(), "Get my info successfully",userService.getMyInfo());
+            return new ResponseData<>(HttpStatus.OK.value(), Translator.toLocale("user.myInfo.successfully"),userService.getMyInfo());
         }catch (ResourceNotFoundException e){
             log.error("errorMessage={}", e.getMessage(), e.getCause());
             return new ResponseError(HttpStatus.BAD_REQUEST.value(), e.getMessage());
@@ -85,7 +86,7 @@ public class UserController {
         log.info("Request delete user {}", userId);
         try {
             userService.deleteUser(userId);
-            return new ResponseData<>(HttpStatus.OK.value(), "Delete user successfully");
+            return new ResponseData<>(HttpStatus.OK.value(), Translator.toLocale("user.delete.successfully"));
         }catch (ResourceNotFoundException e){
             log.error("errorMessage={}", e.getMessage(), e.getCause());
             return new ResponseError(HttpStatus.BAD_REQUEST.value(), e.getMessage());
@@ -99,7 +100,7 @@ public class UserController {
         log.info("Request update user {}", userId);
         try {
 
-            return new ResponseData<>(HttpStatus.OK.value(), "Update user successfully",userService.updateUser(userId, request));
+            return new ResponseData<>(HttpStatus.OK.value(), Translator.toLocale("user.update.successfully"),userService.updateUser(userId, request));
         }catch (ResourceNotFoundException e){
             log.error("errorMessage={}", e.getMessage(), e.getCause());
             return new ResponseError(HttpStatus.BAD_REQUEST.value(), e.getMessage());

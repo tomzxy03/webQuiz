@@ -11,8 +11,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AnswerRequestDTO {
     @NotBlank  (message = "Answer text must be not blank")
-    @JsonProperty("answer_text")
-    String answer_text;
+    @JsonProperty("answerText")
+    String answerText;
     @NotNull(message = "Correct answer must be not null")
     Boolean correct_answer;
 

@@ -49,6 +49,12 @@ public class Question extends BaseEntity{
         return answers;
     }
 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chapter_id", nullable = false)
+    @JsonIgnore
+    Chapter chapter;
+
     @ManyToMany(mappedBy = "questions")
     @JsonIgnore
     Set<Quiz> quizzes;

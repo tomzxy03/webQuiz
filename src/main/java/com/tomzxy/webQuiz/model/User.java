@@ -71,7 +71,7 @@ public class User extends BaseEntity {
 
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
-    List<Notifications> notifications;
+    List<NotificationUser> notifications;
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     List<QuizResult> quizResults;

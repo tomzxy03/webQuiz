@@ -1,9 +1,9 @@
 package com.tomzxy.webQuiz.dto.response.AppResponse;
 
+import java.io.Serializable;
+
 import lombok.Builder;
 import lombok.Getter;
-
-import java.io.Serializable;
 
 @Getter
 @Builder

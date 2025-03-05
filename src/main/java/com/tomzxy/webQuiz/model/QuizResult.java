@@ -46,9 +46,8 @@ public class QuizResult extends BaseEntity{
     @Temporal(TemporalType.TIMESTAMP)
     Date start_quiz;
 
+
     @Column(name = "end_quiz")
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
     Date end_quiz;
 
     @ManyToOne(fetch = FetchType.LAZY)

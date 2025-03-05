@@ -15,7 +15,7 @@ import lombok.experimental.FieldDefaults;
 @Table(name = "answers_user")
 public class AnswerUser extends BaseEntity{
     @Column(name = "is_correct")
-    Boolean is_correct;
+    private boolean is_correct;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "quiz_result_id", nullable = false)
@@ -23,7 +23,12 @@ public class AnswerUser extends BaseEntity{
     QuizResult quizResult;
 
 
-    @Column(name = "answer_Text") // answerText is unique so don't need add object answer
-    String answer_Text;
+    @ManyToOne
+    @JoinColumn(name = "selected_option")
+    private Answer selectedOption;
+
+    @ManyToOne
+    @JoinColumn(name = "question", nullable = false)
+    private Question question;
 
 }

@@ -57,7 +57,7 @@ public class SubjectController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseData<List<SubjectResponse>> getAllSubject(){
         log.info("get all subject");
         try{

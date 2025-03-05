@@ -23,7 +23,7 @@ public class BaseEntity {
     @Column(name = "create_at")
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    Date create_at;
+    Date createdAt;
 
     @Column(name = "update_at")
     @CreationTimestamp

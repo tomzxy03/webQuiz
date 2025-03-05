@@ -13,8 +13,6 @@ import java.util.List;
 public interface UserService {
     Long saveUser(UserCreateRequestDTO request);
 
-
-
     @PostAuthorize("returnObject.userName = authentication.name")
     UserDetailResponse updateUser(long userId, UserUpdateRequest request);
 

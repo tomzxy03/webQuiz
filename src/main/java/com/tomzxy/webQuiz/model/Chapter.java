@@ -26,6 +26,8 @@ public class Chapter extends BaseEntity{
     @JsonIgnore
     Subject subject;
 
+    @OneToMany(mappedBy = "chapter", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    List<Question> questions;
 
     @OneToMany(mappedBy = "chapter", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     List<Quiz> quizzes;

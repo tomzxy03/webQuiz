@@ -1,6 +1,5 @@
-package com.tomzxy.webQuiz.dto.request.lobby;
+package com.tomzxy.webQuiz.dto.request.group;
 
-import com.tomzxy.webQuiz.model.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
